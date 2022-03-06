@@ -1,32 +1,61 @@
-export default class TweetService {
-  constructor(http) {
-    this.http = http;
-  }
+export default class TweetService{
+  constructor(baseURL){
+    this.baseURL = baseURL;
+  } 
 
-  async getTweets(username) {
+  async getTweets(username){
     const query = username ? `?username=${username}` : '';
-    return this.http.fetch(`/tweets${query}`, {
+    const response = await fetch(`${this.baseURL}/tweets${query}`,{
       method: 'GET',
-    });
+      headers: {'Content-Type': 'application/json'}
+    })
+    const data = await response.json();
+    if(response.status !== 200){
+      throw new Error(data.message);
+    }
+    return data;
   }
 
-  async postTweet(text) {
-    return this.http.fetch(`/tweets`, {
+  async postTweet(text){
+    const response = await fetch(`${this.baseURL}/tweets`,{
       method: 'POST',
-      body: JSON.stringify({ text, username: 'ellie', name: 'Ellie' }),
-    });
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        text, username: 'yun', name : "Yun"
+      })
+    })
+
+    const data = await response.json();
+    if(response.status !== 200){
+      throw new Error(data.message);
+    }
+    return data;
   }
 
-  async deleteTweet(tweetId) {
-    return this.http.fetch(`/tweets/${tweetId}`, {
+  async deleteTweet(tweetId){
+    const response = await fetch(`${this.baseURL}/tweets${tweetId}`,{
       method: 'DELETE',
-    });
+      headers: {'Content-Type': 'application/json'}
+    })
+  
+    if(response.status !== 204){
+      throw new Error('Error');
+    }
   }
 
-  async updateTweet(tweetId, text) {
-    return this.http.fetch(`/tweets/${tweetId}`, {
+  async updateTweet(tweetid, text){
+    const response = await fetch(`${this.baseURL}/tweets/${tweetid}`,{
       method: 'PUT',
-      body: JSON.stringify({ text }),
-    });
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        text
+      })
+    })
+
+    const data = await response.json();
+    if(response.status !== 200){
+      throw new Error(data.message);
+    }
+    return data;
   }
 }

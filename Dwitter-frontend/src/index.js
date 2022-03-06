@@ -1,30 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-import AuthService from './service/auth';
+import App from './app';
+import {BrowserRouter as Router} from 'react-router-dom';
 import TweetService from './service/tweet';
-import { BrowserRouter } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
-import { AuthErrorEventBus } from './context/AuthContext';
-import HttpClient from './network/http';
 
-const baseURL = process.env.REACT_APP_BASE_URL;
-const httpClient = new HttpClient(baseURL);
-const authErrorEventBus = new AuthErrorEventBus();
-const authService = new AuthService();
-const tweetService = new TweetService(httpClient);
+const baseURL= process.env.REACT_APP_BASE_URL;
+const tweetService = new TweetService(baseURL);
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <AuthProvider
-        authService={authService}
-        authErrorEventBus={authErrorEventBus}
-      >
-        <App tweetService={tweetService} />
-      </AuthProvider>
-    </BrowserRouter>
+    <Router>
+      <App tweetService = {tweetService}/>
+    </Router>
   </React.StrictMode>,
   document.getElementById('root')
 );

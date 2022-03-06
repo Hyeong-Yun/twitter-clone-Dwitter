@@ -17,42 +17,39 @@ let tweets = [
   }
 ]
 
-export async function getAll(){
- return tweets; 
+export function getAll(){
+  return tweets;
 }
 
-export async function getAllByUsername(username){
-  return tweets.filter(tweet => tweet.username === username);
+export function getAllByUsername(username){
+  return tweets.filter(tweet => tweet.username === username)
 }
 
-//find는 조건에 맞는 첫번째 값을 리턴
-//filter는 조건에 맞는 모든겂을 리턴
-export async function getById(id){
+export function getById(id){
   return tweets.find(tweet => tweet.id === id)
 }
 
-export async function create(text, name, username){
+export function create(text, name, username){
   const tweet = {
-    id: Date.now().toString(),
-    text,
-    createdAt: new Date(),
-    name,
-    username,
-  };
-  
-  tweets = [tweet, ...tweets];
-
-  return tweet;
-}
-
-export async function update(id, text){
-  let tweet = tweets.find(tweet => tweet.id === id);
-  if(tweet){
-    tweet.text = text;
+      id:Date.now().toString(),
+      text,
+      createdAt: new Date(),
+      name,
+      username
   }
-  return tweet
+    tweets = [tweet, ...tweets];
+   return tweet;
+  
 }
 
-export async function remove(id){
-   tweets = tweets.filter(tweet => tweet.id != id);
+export function update(id, text){
+  const tweet = tweets.find(tweet => tweet.id === id)
+  if(tweet){
+    tweet.text = text
+  }
+  return text;
+}
+
+export function remove(id){
+  tweets = tweets.filter(tweet => tweet.id !== id)
 }

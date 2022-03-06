@@ -1,50 +1,26 @@
-import { Switch, Route, useHistory } from 'react-router-dom';
-import Header from './components/Header';
-import AllTweets from './pages/AllTweets';
-import MyTweets from './pages/MyTweets';
-import { useAuth } from './context/AuthContext';
+import React from 'react';
+import Header from './components/Header/header'
+import styled from "styled-components";
+import {Route, Routes} from 'react-router-dom';
+import NewTweets from './components/NewTweet/newTweets';
 
-function App({ tweetService }) {
-  const history = useHistory();
-  const { user, logout } = useAuth();
+const Container = styled.div`
+  width: 500px;
+  height: 100vh;
+  margin: 0 auto;
+`
 
-  const onAllTweets = () => {
-    history.push('/');
-  };
-
-  const onMyTweets = () => {
-    history.push(`/${user.username}`);
-  };
-
-  const onLogout = () => {
-    if (window.confirm('Do you want to log out?')) {
-      logout();
-      history.push('/');
-    }
-  };
-
+const App = ({tweetService}) => {
   return (
-    <div className='app'>
-      <Header
-        username={user.username}
-        onLogout={onLogout}
-        onAllTweets={onAllTweets}
-        onMyTweets={onMyTweets}
-      />
-      <Switch>
-        (
-        <>
-          <Route exact path='/'>
-            <AllTweets tweetService={tweetService} />
-          </Route>
-          <Route exact path='/:username'>
-            <MyTweets tweetService={tweetService} />
-          </Route>
-        </>
-        )
-      </Switch>
-    </div>
+    <>
+    <Container>
+      <Header/>
+      <Routes>
+        <Route exact path = "/" element = {<NewTweets tweetService = {tweetService}/>}></Route> 
+      </Routes>
+      </Container>
+    </>
   );
-}
+};
 
 export default App;
